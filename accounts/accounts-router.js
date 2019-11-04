@@ -2,8 +2,8 @@ const express = require('express');
 const db = require('../data/dbConfig');
 const router = express.Router();
 
+// * COMPLETE
 router.get('/', (req, res) => {
-  // TODO
   db.select('*')
     .from('accounts')
     .then(accounts => {
@@ -14,12 +14,21 @@ router.get('/', (req, res) => {
     })
 });
 
+// * COMPLETE
 router.get('/:id', (req, res) => {
-  // TODO
+  db.select('*')
+  .from('accounts').where('id', '=', req.params.id)
+  .first()
+  .then(account => {
+    res.status(200).json(account);
+  })
+  .catch(err => {
+    res.status(500).json(err);
+  })
 });
 
+// * COMPLETE
 router.post('/', (req, res) => {
-  // TODO
   const accountData = req.body;
   db('accounts').insert(accountData, 'id')
     .then(ids => {
