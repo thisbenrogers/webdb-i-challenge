@@ -4,14 +4,57 @@ const router = express.Router();
 
 // * COMPLETE
 router.get('/', (req, res) => {
-  db.select('*')
-    .from('accounts')
+  const limit = req.query.limit;
+  const sort = req.query.sortby;
+  const dir = req.query.sortdir;
+  const getQuery = db.select('*').from('accounts');
+  if (limit && sort && dir) {
+    getQuery
+      .limit(+limit)
+      .orderBy(`${sort}`, `${dir}`)
+      .then(accounts => {
+        res.status(200).json(accounts);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      })
+  } else if (limit && sort) {
+    getQuery
+      .limit(+limit)
+      .orderBy(`${sort}`)
+      .then(accounts => {
+        res.status(200).json(accounts);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      })
+  } else if (sort && dir) {
+    getQuery
+    .orderBy(`${sort}`, `${dir}`)
     .then(accounts => {
       res.status(200).json(accounts);
     })
     .catch(err => {
       res.status(500).json(err);
     })
+  } else if (limit) {
+    getQuery
+      .limit(+limit)
+      .then(accounts => {
+        res.status(200).json(accounts);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      })
+  } else {
+    getQuery
+      .then(accounts => {
+        res.status(200).json(accounts);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      })
+  }
 });
 
 // * COMPLETE
