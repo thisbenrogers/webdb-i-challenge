@@ -39,8 +39,17 @@ router.post('/', (req, res) => {
     })
 });
 
+// * COMPLETE
 router.put('/:id', (req, res) => {
-  // TODO
+  db('accounts')
+  .where({ id: req.params.id })
+  .update(req.body)
+  .then(count => {
+    res.status(200).json(count);
+  })
+  .catch(err => {
+    res.status(500).json(count);
+  })
 });
 
 router.delete('/:id', (req, res) => {
