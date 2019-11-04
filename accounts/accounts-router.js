@@ -52,8 +52,17 @@ router.put('/:id', (req, res) => {
   })
 });
 
+// * COMPLETE
 router.delete('/:id', (req, res) => {
-  // TODO
+  db('accounts')
+  .where({ id: req.params.id })
+  .del(req.body)
+  .then(count => {
+    res.status(200).json(count);
+  })
+  .catch(err => {
+    res.status(500).json(count);
+  })
 });
 
 module.exports = router;
